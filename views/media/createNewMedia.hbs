@@ -1,0 +1,41 @@
+<div class="container">
+<form action="/media/create-new-media" method="POST" enctype="multipart/form-data">
+  <div class="mb-3 mt-3">
+    <label class="form-label">Name:</label>
+    <input type="text" class="form-control" id="email" name="name" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Description:</label>
+    <input type="text" class="form-control" id="pwd" name="description" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Genre:</label>
+    <input type="text" class="form-control" id="pwd" name="genre" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Year:</label>
+    <input type="text" class="form-control" id="pwd" name="year" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Director:</label>
+    <input type="text" class="form-control" id="pwd" name="director" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Category:
+      <select name="category">
+        <option>Anime</option>
+        <option>Music</option>
+        <option>Documentary</option>
+        <option>Movie</option>
+      </select>
+    </label>
+  </div>
+  <div class="mb-3">
+    <label>Image:
+      <input type="file" name="imageUrl" accept="image/*">
+    </label>
+  </div>
+  <button type="submit" class="btn btn-primary">Create</button>
+</form>
+
+</div>

@@ -1,0 +1,21 @@
+<div class="container-fluid">
+<h1 class="display-2 text-center">Movies</h1>
+</div>
+
+
+<div class="container mt-5">
+  <div class="row">
+{{#each moviesData}}
+<div class="card m-1" style="width:350px">
+  <img class="card-img-top ml-2 mr-2 mt-2" src="{{imageUrl}}" alt="Card image">
+  <div class="card-body">
+    <h2 class="card-title">{{name}}</h2>
+    <p class="card-text">{{description}}</p>
+    <p class="card-text">Genre: {{genre}}</p>
+    <p class="card-text">Year released: {{year}}</p>
+    <p class="card-text">Director: {{director}}</p>
+    <a href="/media/{{id}}" class="btn btn-primary">View More</a>
+  </div>
+</div>
+{{/each}}
+  </div> 

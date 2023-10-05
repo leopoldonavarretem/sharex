@@ -1,0 +1,88 @@
+{{! MEDIA INFORMATION }}
+<div class="container">
+  <h1 class="text-center p-2">{{mediaData.name}}</h1>
+</div>
+
+<div class="container">
+  <div class="row">
+
+    <div class="col-sm-3" >
+      <img
+        src="{{mediaData.imageUrl}}"
+        class="img-thumbnail"
+        alt="Media Image"
+      />
+    </div>
+
+    <div class="col">
+      <h3>{{mediaData.year}}, {{mediaData.director}}</h2>
+      <p>{{mediaData.description}}</p>
+      <p>{{mediaData.genre}}</p>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="container">
+
+  <form action="/media/create-new-review" method="post" class="p-3">
+    <div class="mb-3 mt-3">
+      <textarea id="media_Id" name="media_Id" hidden>{{mediaData.id}}</textarea>
+      <textarea id="media_Id" name="user_Id" hidden>{{userData.username}}</textarea>
+
+      <label for="review" class="form-label">Review:</label>
+      <textarea
+        type="text"
+        class="form-control"
+        id="review"
+        placeholder="Type your Review"
+        name="review"
+      ></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label for="calification" class="form-label">Calification</label>
+      <input
+        type="number"
+        class="form-control"
+        id="calification"
+        placeholder="0"
+        name="calification"
+        min="1"
+        max="5"
+      />
+    </div>
+
+    <div class="form-check mb-3">
+      <label class="form-check-label">
+        <input class="form-check-input" type="radio" name="like" value="true" />
+        Loved it?
+      </label>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+
+</div>
+
+<div class="container">
+
+  {{#each reviewData}}
+<div id="accordion">
+  <div class="card">
+    <div class="card-header">
+      <a class="btn" data-bs-toggle="collapse" href="#collapseOne">
+        {{#if like}} <img src="/images/heart.png" alt="" srcset="" width="30px"> {{/if}}{{user_Id}} Says:  
+      </a>
+    </div>
+    <div id="collapseOne" class="collapse show" data-bs-parent="#accordion">
+      <div class="card-body">
+        {{review}}
+        <br>
+       
+      </div>
+    </div>
+  </div>
+</div>
+  {{/each}}
+</div>
