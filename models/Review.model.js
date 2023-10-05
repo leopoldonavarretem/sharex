@@ -1,3 +1,4 @@
+// Imports
 const { Schema, model } = require("mongoose");
 
 const reviewSchema = new Schema(
@@ -7,10 +8,8 @@ const reviewSchema = new Schema(
       unique: false
     },
 
-    media_Id: {
-      type: Schema.Types.ObjectId,
-      ref: "Media",
-      unique: false
+    externalId: {
+      type: String,
     },
  
     review: {

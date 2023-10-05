@@ -3,7 +3,7 @@ const { Schema, model } = require("mongoose");
 
 const albumSchema = new Schema(
   {
-    name: {
+    albumName: {
       type: String,
       required: true,
     },
@@ -23,15 +23,18 @@ const albumSchema = new Schema(
       required: true,
     },
 
-    director: {
+    artist: {
       type: String,
       required: true,
     },
 
     imageUrl: {
       type: String
-    }
+    },
 
+    likes: {
+      type: Number,
+    }
   },
 
   {
