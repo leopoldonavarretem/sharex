@@ -21,7 +21,7 @@ const userSchema = new Schema(
       required: [true, "Password is required."],
     },
 
-    role: {
+    admin: {
       type: Boolean,
       default: false
     }

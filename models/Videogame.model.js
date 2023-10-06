@@ -1,4 +1,4 @@
-
+// Imports
 const { Schema, model } = require("mongoose");
 
 const videogameSchema = new Schema(

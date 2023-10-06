@@ -1,60 +1,36 @@
 // Imports
 const router = require("express").Router();
-const fileUploader = require("../config/cloudinary.config");
+const Videogame = require('../models/Videogame.model');
 
 // Middleware Imports
 const isLoggedIn = require('../middleware/isLoggedIn');
 
-//ROUTER CREATE-NEW-MEDIA
-router.get("/create-new-media", isLoggedIn, (req, res, next) => {
-  res.render("media/create-new-media");
-});
-
-router.post(
-  "/create-new-media",
-  isLoggedIn,
-  fileUploader.single("imageUrl"),
-  (req, res, next) => {
-    const { path } = req.file;
-    Media.create({ ...req.body, imageUrl: path })
-      .then((newMedia) => {
-        if (newMedia.category === "Documentary") {
-          res.redirect("/media/documentaries");
-        } else if (newMedia.category === "Anime") {
-          res.redirect("/media/anime");
-        } else if (newMedia.category === "Music") {
-          res.redirect("/media/music");
-        } else if (newMedia.category === "Movie") {
-          res.redirect("/media/movies");
-        }
-      })
-      .catch(console.log);
-  }
-);
-
-router.post("/:media", isLoggedIn, (req, res, next) => {
-  Review.create(req.body).then(res.redirect("/#")).catch(console.log);
-});
-
-//ROUTER FOR INDIVIDUAL MEDIA
-router.get("/:media", (req, res, next) => {
-  const mediaId = req.params.media;
-  const userData = req.session.user;
-  Media.findById(`${mediaId}`)
-    .then((mediaData) => {
-      Review.find({ media_Id: `${mediaId}` })
-        .then((reviewData) => {
-          res.render("media/media-page", { mediaData, reviewData, userData});
-        })
-        .catch(console.log);
+// This route will show all the videogames
+router.get('/', (req, res)=>{
+  Videogame.find()
+    .then((videogamesData)=>{
+        res.render('media/videogames', {videogamesData}) 
     })
-    .catch(console.log);
+    .catch(console.log)
 });
 
+//This route will show you a single videogame
+router.get('/:videogame', isLoggedIn, (req, res)=>{
 
-//ROUTER VIDEOGAME
-router.get("/videogame", (req, res, next) => {
-  res.render("media/videogame");
-});
+})
+// This route will create a new videogame
+router.post('/:videogame', isLoggedIn, (req,res)=>{
+
+})
+
+// This route will update the videogame
+router.patch('/:videogame', isLoggedIn, (req, res)=>{
+
+})
+
+//This route will delete the videogame
+router.delete('/:videogame', isLoggedIn, (req, res)=>{
+
+})
 
 module.exports = router;
