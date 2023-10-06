@@ -15,9 +15,9 @@ router.get("/", (req, res, next) => {
 
 router.use('/auth', authRoutes);
 router.use('/videogames', videoGameRoutes);
-router.use('./series', seriesRoutes);
-router.use('./movies', moviesRoutes);
-router.use('./albums', albumRoutes);
+router.use('/series', seriesRoutes);
+router.use('/movies', moviesRoutes);
+router.use('/albums', albumRoutes);
 
 // Export to app
 module.exports = router;

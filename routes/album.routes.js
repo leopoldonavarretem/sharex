@@ -1,66 +1,36 @@
 // Imports
-const router = require('express').Router()
-const fileUploader = require("../config/cloudinary.config");
+const router = require("express").Router();
+const Album = require('../models/Album.model');
 
-// Middleware imports
-const isLoggedIn = require('../middleware/isLoggedIn')
+// Middleware Imports
+const isLoggedIn = require('../middleware/isLoggedIn');
 
-//ROUTER CREATE-NEW-MEDIA
-router.get("/create-new-media", isLoggedIn, (req, res, next) => {
-  res.render("media/create-new-media");
-});
-
-router.post(
-  "/create-new-media",
-  isLoggedIn,
-  fileUploader.single("imageUrl"),
-  (req, res, next) => {
-    const { path } = req.file;
-    Media.create({ ...req.body, imageUrl: path })
-      .then((newMedia) => {
-        if (newMedia.category === "Documentary") {
-          res.redirect("/media/documentaries");
-        } else if (newMedia.category === "Anime") {
-          res.redirect("/media/anime");
-        } else if (newMedia.category === "Music") {
-          res.redirect("/media/music");
-        } else if (newMedia.category === "Movie") {
-          res.redirect("/media/movies");
-        }
-      })
-      .catch(console.log);
-  }
-);
-
-router.post("/:media", isLoggedIn, (req, res, next) => {
-  Review.create(req.body).then(res.redirect("/#")).catch(console.log);
-});
-
-//ROUTER FOR INDIVIDUAL MEDIA
-router.get("/:media", (req, res, next) => {
-  const mediaId = req.params.media;
-  const userData = req.session.user;
-  Media.findById(`${mediaId}`)
-    .then((mediaData) => {
-      Review.find({ media_Id: `${mediaId}` })
-        .then((reviewData) => {
-          res.render("media/media-page", { mediaData, reviewData, userData});
-        })
-        .catch(console.log);
+// This route will show all the album 
+router.get('/', (req, res)=>{
+  Album.find()
+    .then((albumsData)=>{
+        res.render('media/albums', {albumsData}) 
     })
-    .catch(console.log);
+    .catch(console.log)
 });
 
+//This route will show you a single album 
+router.get('/:album', isLoggedIn, (req, res)=>{
 
-router.get("/music", (req, res, next) => {
-  Media.find({ category: "Music" })
-    .then((musicsData) => {
-      musicsData.forEach((data) => {
-        data.description = data.description.slice(0, 100) + "...";
-      });
-      res.render("media/music", { musicsData });
-    })
-    .catch(console.log);
-});
+})
+// This route will create a new album 
+router.post('/:album', isLoggedIn, (req,res)=>{
+
+})
+
+// This route will update the album 
+router.patch('/:album', isLoggedIn, (req, res)=>{
+
+})
+
+//This route will delete the album 
+router.delete('/:album', isLoggedIn, (req, res)=>{
+
+})
 
 module.exports = router;
