@@ -18,6 +18,6 @@ const allRoutes = require('./routes/index.routes')
 app.use('/', allRoutes)
 
 //This will handle all of our routes
-require("./error-handling")(app);
+require("./error_handling/error")(app);
 
 module.exports = app;
