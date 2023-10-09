@@ -1,11 +1,11 @@
 // Imports
-const { Schema, model } = require("mongoose");
+const { Schema, model, default: mongoose } = require("mongoose");
 
 const reviewSchema = new Schema(
   {
-    user_Id: {
-      type: String,
-      unique: false
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
     },
 
     externalId: {
@@ -16,7 +16,7 @@ const reviewSchema = new Schema(
       type: String,
     },
 
-    calification: {
+    rating: {
       type: Number,
     },
 
