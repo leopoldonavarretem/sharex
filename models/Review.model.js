@@ -5,23 +5,31 @@ const reviewSchema = new Schema(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User'
+      ref: 'User',
+      required: [true, 'User Id is required']
     },
 
     externalId: {
       type: String,
+      required: [true, 'External Id is required']
     },
  
     review: {
       type: String,
+      required: [true, 'Review text is required.'],
+      minLength: 30
     },
 
     rating: {
       type: Number,
+      required: [true, 'Rating is required'],
+      min: 0,
+      max: 5
     },
 
     like: {
       type: Boolean,
+      default: false
     },
   },
   {
