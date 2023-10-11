@@ -31,10 +31,6 @@ const seriesModel = new Schema(
     imageUrl: {
       type: String
     },
-
-    likes: {
-      type: Number,
-    }
   },
 
   {
