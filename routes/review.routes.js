@@ -12,7 +12,7 @@ const isLoggedIn = require('../middleware/isLoggedIn');
 const isValidObjectId = (id) => ObjectId.isValid(id) && (new Object(id)).toString() === id;
 
 // This route will create a new review 
-router.post('/', isLoggedIn, (req,res)=>{
+router.post('/', isLoggedIn, async (req,res, next)=>{
 
   // Destructuring the request
   let {review, rating, externalId, like, mediaType} = req.body 
@@ -23,75 +23,56 @@ router.post('/', isLoggedIn, (req,res)=>{
   rating = Number(rating);
 
   // Validate data
-  req.session.errors = {}
+  req.session.reviewErrors = [] 
 
   //Check that it is a valid external Id
-  if (!isValidObjectId(externalId)) req.session.errors.request = true; 
-  if (!['videogames', 'movies', 'albums', 'series'].includes(mediaType)) req.session.errors.request = true;
-  
-  // Send the request back to home if there are any errors
-  if (req.session.errors.request) return res.redirect('/')
+  if (!isValidObjectId(externalId)) return next(400) 
+  if (!['videogames', 'movies', 'albums', 'series'].includes(mediaType)) return next(400)
 
   // Check that the review object is valid
-  if (typeof review !== 'string') req.session.errors.review = true;
-  if (typeof rating !== 'number') req.session.errors.review = true;
-  if (typeof like !== 'boolean') req.session.errors.review = true;
+  if (typeof review !== 'string' || review.length < 30) req.session.reviewErrors.push("Review must only include text and a minimum length of 30");
+  if (typeof rating !== 'number' || 0>rating || rating>5) req.session.reviewErrors.push("Rating can only be a number and must at a minimum 0 and maximum 5");
+  if (typeof like !== 'boolean') req.session.reviewErrors.push('Like can only be true or false');
 
   // Send the user back to the request if there are any errors
-  if (req.session.errors.review) return res.redirect(`/${mediaType}/${externalId}`)
+  if (req.session.reviewErrors.length > 0) return res.redirect(`/${mediaType}/${externalId}`)
   
   // Create review object
   const newReview = {review, rating, externalId, like, userId}
 
-  // Create a new Review
-  Review.create(newReview)
-    .then(() => {return res.redirect(`/${mediaType}/${externalId}`)})
-    .catch(() => req.session.errors.server = true)
-
-    //Send the user back to home page if server error
-  return res.redirect('/')
+  try{    
+    // Create a new Review
+    await Review.create(newReview)
+    return res.redirect(`/${mediaType}/${externalId}`)
+  }
+  catch(err){
+    return next(500)
+  }
 });
 
 //This route will delete the movie 
-router.get('/:reviewId', isLoggedIn, async(req, res)=>{
+router.get('/:reviewId', isLoggedIn, async(req, res, next)=>{
   // Destructuring the request
   const user = req.session.user;
-
-  // Validate data
-  req.session.errors = {}
-
-  // Validate the ObjectId
-  if (!isValidObjectId(req.params.reviewId)) req.session.errors.request = true;
-
-  // Send the request back to home if there are any errors
-  if (req.session.errors.request) return res.redirect('/');
-
-  // Request the review
-  const review = await Review.findById(req.params.reviewId)
-    .populate('userId', 'username')
-    .catch(()=> req.session.errors.server = true)
-
-  //Send the user back to home page if server error
-  if (req.session.errors.server) return res.redirect('/')
-
-  // Validate that the review exists
-  if (!review) req.session.errors.review = true;
-
-  // Send the request back to home if the review doesn't exist
-  if (req.session.errors.review) return res.redirect(`/users/${user._id}`); 
-
-  // Validate that the owner is deleting it
-  if (review.userId.username !== user.username) req.session.errors.authorization = true; 
-
-  // Send the user back to their homepage if there's an error
-  if (req.session.errors.authorization) return res.redirect(`/users/${user._id}`);
-
-  // Finally delete the Review
-  Review.findByIdAndDelete(req.params.reviewId)
-    .then(()=>{return res.redirect(`/users/${user._id}`)})
-    .catch(()=>req.session.errors.server = true)
   
-    return res.redirect(`/users/${user._id}`);
+  // Validate the ObjectId
+  if (!isValidObjectId(req.params.reviewId)) return next(400);
+
+  try{
+    // Request the review
+    const review = await Review.findById(req.params.reviewId)
+      .populate('userId', 'username')
+
+      // Validate that the owner is deleting it
+      if (review.userId.username !== user.username) return next(401) 
+      
+      // Delete the Review
+      await Review.findByIdAndDelete(req.params.reviewId)
+      return res.redirect(`/users/${user._id}`)
+  }
+  catch(err){
+    return next(500)
+  }
 });
 
 module.exports = router;
