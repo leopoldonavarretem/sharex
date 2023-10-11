@@ -1,36 +1,47 @@
 // Imports
 const router = require("express").Router();
-const Album = require('../models/Album.model');
 
-// Middleware Imports
-const isLoggedIn = require('../middleware/isLoggedIn');
+// Import models
+const Album = require('../models/Album.model');
+const Review = require('../models/Review.model');
 
 // This route will show all the album 
-router.get('/', (req, res)=>{
-  Album.find()
-    .then((albumsData)=>{
-        res.render('media/albums', {albumsData}) 
-    })
-    .catch(console.log)
+router.get('/', async (req, res, next)=>{
+
+  // Get necessary data
+  const userData = req.session.user;
+
+  try{
+    const albumsData = await Album.find();
+    return res.render('media/albums', {albumsData, userData});
+  }
+  catch(err){
+    return next(500);
+  }
 });
 
-//This route will show you a single album 
-router.get('/:album', isLoggedIn, (req, res)=>{
+router.get('/:album', async(req, res, next)=>{
+  
+  // Get required data
+  const userData = req.session.user;
+  const errorMessage = req.session.reviewErrors;
 
-})
-// This route will create a new album 
-router.post('/:album', isLoggedIn, (req,res)=>{
+  if(errorMessage) delete req.session.reviewErrors;
 
-})
+  try{
+    const albumData = await Album.findById(req.params.album);
 
-// This route will update the album 
-router.patch('/:album', isLoggedIn, (req, res)=>{
+    const reviewsData = await Review.find({externalId: albumData._id})
+      .populate('userId', 'username')
+      .catch(()=>{
+        return [];
+      });
 
-})
-
-//This route will delete the album 
-router.delete('/:album', isLoggedIn, (req, res)=>{
-
-})
+      return res.render('media/album', {albumData, userData, errorMessage, reviewsData});
+  }
+  catch(err){
+    next(500);
+  };
+});
 
 module.exports = router;
