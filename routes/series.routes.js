@@ -1,36 +1,48 @@
 // Imports
 const router = require("express").Router();
-const Serie = require('../models/Serie.model');
 
-// Middleware Imports
-const isLoggedIn = require('../middleware/isLoggedIn');
+// Import models
+const Serie = require('../models/Serie.model');
+const Review = require('../models/Review.model');
 
 // This route will show all the series 
-router.get('/', (req, res)=>{
-  Serie.find()
-    .then((seriesData)=>{
-        res.render('media/series', {seriesData}) 
-    })
-    .catch(console.log)
+router.get('/', async (req, res, next)=>{
+  
+  // Get necessary data
+  const userData = req.session.user;
+
+  try{
+    const seriesData = await Serie.find();
+    return res.render('media/series', {seriesData, userData});
+    }
+  catch(err){
+    return next(500);
+  };
 });
 
-//This route will show you a single serie 
-router.get('/:serie', isLoggedIn, (req, res)=>{
+// This route will show a single serie
+router.get('/:serie', async (req, res, next)=>{
 
-})
-// This route will create a new serie 
-router.post('/:serie', isLoggedIn, (req,res)=>{
+  // Get required data
+  const userData = req.session.user;
+  const errorMessage = req.session.reviewErrors;
 
-})
+  if(errorMessage) delete req.session.reviewErrors;
 
-// This route will update the serie 
-router.patch('/:serie', isLoggedIn, (req, res)=>{
+  try{
+    const serieData = await Serie.findById(req.params.serie);
+    
+    const reviewsData = await Review.find({externalId: reviewData._id})
+      .populate('userId', 'username')
+      .catch(()=>{
+        return [];
+      });
 
-})
-
-//This route will delete the serie 
-router.delete('/:serie', isLoggedIn, (req, res)=>{
-
-})
+      return res.render('media/serie', {serieData, userData, errorMessage, reviewsData});
+  }
+  catch(err){
+    next(500);
+  };
+});
 
 module.exports = router;
