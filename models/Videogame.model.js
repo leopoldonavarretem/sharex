@@ -29,13 +29,9 @@ const videogameSchema = new Schema(
     },
 
     imageUrl: {
-      type: String
+      type: String,
+      default: 'noimage'
     },
-
-    likes: {
-      type: Number,
-    }
- 
   },
 
   {

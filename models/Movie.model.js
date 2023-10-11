@@ -31,10 +31,6 @@ const movieSchema = new Schema(
     imageUrl: {
       type: String
     },
-
-    likes: {
-      type: Number,
-    }
   },
 
   {
