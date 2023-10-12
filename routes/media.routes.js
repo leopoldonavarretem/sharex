@@ -2,25 +2,26 @@
 const router = require("express").Router();
 
 // Import models
-const Album = require('../models/Album.model');
+const Media = require('../models/Media.model');
 const Review = require('../models/Review.model');
 
-// This route will show all the album 
+// This route will show all the media 
 router.get('/', async (req, res, next)=>{
 
   // Get necessary data
   const userData = req.session.user;
 
   try{
-    const albumsData = await Album.find();
-    return res.render('media/albums', {albumsData, userData});
+    const mediasData = await Media.find({mediaType: req.query.mediaType});
+
+    return res.render(`media/${req.query.mediaType.toLowerCase()}s`, {mediasData, userData});
   }
   catch(err){
     return next(500);
   }
 });
 
-router.get('/:album', async(req, res, next)=>{
+router.get('/:media', async(req, res, next)=>{
   
   // Get required data
   const userData = req.session.user;
@@ -29,15 +30,15 @@ router.get('/:album', async(req, res, next)=>{
   if(errorMessage) delete req.session.reviewErrors;
 
   try{
-    const albumData = await Album.findById(req.params.album);
+    const mediaData = await Media.findById(req.params.media);
 
-    const reviewsData = await Review.find({externalId: albumData._id})
+    const reviewsData = await Review.find({mediaId: mediaData._id})
       .populate('userId', 'username')
       .catch(()=>{
         return [];
       });
 
-      return res.render('media/album', {albumData, userData, errorMessage, reviewsData});
+      return res.render(`media/${mediaData.mediaType.toLowerCase()}`, {mediaData, userData, errorMessage, reviewsData});
   }
   catch(err){
     next(500);

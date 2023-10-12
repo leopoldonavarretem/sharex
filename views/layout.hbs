@@ -15,8 +15,7 @@
   </head>
 
   <body id="cuerpo">
-
-    <div id="contener">
+    <div id="container">
       <header class="p-3 bg-dark text-white">
         <div class="container">
           <div
@@ -41,27 +40,31 @@
               <li><a href="/" class="nav-link px-2 text-secondary">Home</a></li>
 
               <li><a
-                  href="/movies"
+                  href="/media?mediaType=Movie"
                   class="nav-link px-2 text-white"
                 >Movies</a></li>
 
               <li><a
-                  href="/albums"
+                  href="/media?mediaType=Album"
                   class="nav-link px-2 text-white"
                 >Albums</a></li>
 
               <li><a
-                  href="/Series"
+                  href="/media?mediaType=Serie"
                   class="nav-link px-2 text-white"
                 >Series</a></li>
 
               <li><a
-                  href="/videogames"
+                  href="/media?mediaType=Videogame"
                   class="nav-link px-2 text-white"
                 >Videogames</a></li>
-
+              <li><a
+                  href="/media?mediaType=Book"
+                  class="nav-link px-2 text-white"
+                >Books</a></li>
             </ul>
 
+            {{#unless userData}}
             <div class="text-end">
               <a href="/auth/login"><button
                   type="button"
@@ -71,8 +74,26 @@
                   type="button"
                   class="btn btn-warning"
                 >Sign-up</button></a>
-
             </div>
+
+            {{else}}
+              {{#if userData.admin}}
+                <div class ='text-end'>
+                <a href="/admin"><button
+                    type = 'button'
+                    class = 'btn btn-info'
+                  >Admin Panel</button></a>
+                </div>
+              {{/if}}
+
+                <div class="text-end">
+                  <a href="/auth/logout"><button
+                      type="button"
+                      class = "btn btn-warning"
+                  >Logout</button></a>
+                </div>
+            {{/unless}}
+            
           </div>
         </div>
       </header>

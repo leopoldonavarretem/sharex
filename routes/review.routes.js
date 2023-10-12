@@ -13,9 +13,9 @@ const isValidObjectId = (id) => ObjectId.isValid(id) && (new Object(id)).toStrin
 
 // This route will create a new review 
 router.post('/', isLoggedIn, async (req,res, next)=>{
-
+  
   // Destructuring the request
-  let {review, rating, externalId, like, mediaType} = req.body 
+  let {review, rating, mediaId, like, mediaType} = req.body 
   const userId = req.session.user._id;
   
   // Transform data
@@ -26,8 +26,8 @@ router.post('/', isLoggedIn, async (req,res, next)=>{
   req.session.reviewErrors = [] 
 
   //Check that it is a valid external Id
-  if (!isValidObjectId(externalId)) return next(400) 
-  if (!['videogames', 'movies', 'albums', 'series'].includes(mediaType)) return next(400)
+  if (!isValidObjectId(mediaId)) return next(400) 
+  if (!['Videogame', 'Movie', 'Album', 'serie', 'Book'].includes(mediaType)) return next(400)
 
   // Check that the review object is valid
   if (typeof review !== 'string' || review.length < 30) req.session.reviewErrors.push("Review must only include text and a minimum length of 30");
@@ -35,15 +35,15 @@ router.post('/', isLoggedIn, async (req,res, next)=>{
   if (typeof like !== 'boolean') req.session.reviewErrors.push('Like can only be true or false');
 
   // Send the user back to the request if there are any errors
-  if (req.session.reviewErrors.length > 0) return res.redirect(`/${mediaType}/${externalId}`)
+  if (req.session.reviewErrors.length > 0) return res.redirect(`/media/${mediaId}`)
   
   // Create review object
-  const newReview = {review, rating, externalId, like, userId}
+  const newReview = {review, rating, mediaId, like, userId}
 
   try{    
     // Create a new Review
     await Review.create(newReview)
-    return res.redirect(`/${mediaType}/${externalId}`)
+    return res.redirect(`/media/${mediaId}`)
   }
   catch(err){
     return next(500)
