@@ -9,9 +9,10 @@ const reviewSchema = new Schema(
       required: [true, 'User Id is required']
     },
 
-    externalId: {
-      type: String,
-      required: [true, 'External Id is required']
+    mediaId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Media',
+      required: [true, 'Media Id is required']
     },
  
     review: {

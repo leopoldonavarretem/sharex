@@ -1,9 +1,9 @@
 // Imports
 const { Schema, model } = require("mongoose");
 
-const movieSchema = new Schema(
+const mediaSchema = new Schema(
   {
-    movieName: {
+    mediaName: {
       type: String,
       required: true,
     },
@@ -23,7 +23,7 @@ const movieSchema = new Schema(
       required: true,
     },
 
-    director: {
+    creator: {
       type: String,
       required: true,
     },
@@ -31,6 +31,10 @@ const movieSchema = new Schema(
     imageUrl: {
       type: String
     },
+
+    mediaType:{
+      type: String
+    }
   },
 
   {
@@ -38,4 +42,4 @@ const movieSchema = new Schema(
   }
 );
 
-module.exports = model("Movie", movieSchema);
+module.exports = model("Media", mediaSchema);
