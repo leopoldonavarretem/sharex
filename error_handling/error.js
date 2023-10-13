@@ -7,16 +7,18 @@ module.exports = (app) => {
 
   // This middleware runs whenever there are errors.
   app.use ((err, req, res, next)=>{
+    const userData = req.session.user
+
     if (err === 400){
-      return res.status(err).render('error/requestError')
+      return res.status(err).render('error/requestError', {userData});
     };
     
     if (err === 401){
-      return res.status(err).render('error/notAuthorized')
+      return res.status(err).render('error/notAuthorized', {userData});
     };
 
     if(err === 500){
-      return res.status(500).render('error/serverError')
+      return res.status(500).render('error/serverError', {userData});
     };
 
   });
