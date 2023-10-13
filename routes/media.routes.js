@@ -12,13 +12,13 @@ router.get('/', async (req, res, next)=>{
   const userData = req.session.user;
 
   try{
-    const mediasData = await Media.find({mediaType: req.query.mediaType});
+    const mediasData = await Media.find({mediaType: req.query.mediaType}).sort({year: -1})
 
-    return res.render(`media/${req.query.mediaType.toLowerCase()}s`, {mediasData, userData});
+    return res.render(`media/medias`, {mediasData, userData, mediaType: req.query.mediaType});
   }
   catch(err){
     return next(500);
-  }
+  };
 });
 
 router.get('/:media', async(req, res, next)=>{
@@ -32,13 +32,13 @@ router.get('/:media', async(req, res, next)=>{
   try{
     const mediaData = await Media.findById(req.params.media);
 
-    const reviewsData = await Review.find({mediaId: mediaData._id})
+    const reviewsData = await Review.find({mediaId: mediaData._id}).sort({year: -1})
       .populate('userId', 'username')
       .catch(()=>{
         return [];
       });
-
-      return res.render(`media/${mediaData.mediaType.toLowerCase()}`, {mediaData, userData, errorMessage, reviewsData});
+      
+    return res.render('media/media', {mediaData, userData, errorMessage, reviewsData});
   }
   catch(err){
     next(500);
