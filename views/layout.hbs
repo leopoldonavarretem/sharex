@@ -14,90 +14,47 @@
     />
   </head>
 
-  <body id="cuerpo">
-    <div id="container">
-      <header class="p-3 bg-dark text-white">
+  <body>
+      <nav class="p-3 bg-dark text-white">
+
         <div class="container">
-          <div
-            class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start"
-          >
-            <a
-              href="/"
-              class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none"
-            >
-              <svg
-                class="bi me-2"
-                width="40"
-                height="32"
-                role="img"
-                aria-label="Bootstrap"
-              ><use xlink:href="#bootstrap"></use></svg>
-            </a>
+          <div class="row">
 
-            <ul
-              class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0"
-            >
-              <li><a href="/" class="nav-link px-2 text-secondary">Home</a></li>
+            <div class="col-sm-12 col-lg-8">
+              <ul class="nav">
+                  <li><a href="/" class="navbar-brand text-white">Sharex</a></li>
+                  
+                  <li><a href="/media?mediaType=Movie" class="nav-link text-white">Movies</a></li>
 
-              <li><a
-                  href="/media?mediaType=Movie"
-                  class="nav-link px-2 text-white"
-                >Movies</a></li>
+                  <li><a href="/media?mediaType=Album" class="nav-link text-white">Albums</a></li>
 
-              <li><a
-                  href="/media?mediaType=Album"
-                  class="nav-link px-2 text-white"
-                >Albums</a></li>
+                  <li><a href="/media?mediaType=Serie" class="nav-link text-white">Series</a></li>
 
-              <li><a
-                  href="/media?mediaType=Serie"
-                  class="nav-link px-2 text-white"
-                >Series</a></li>
+                  <li><a href="/media?mediaType=Videogame" class="nav-link text-white">Videogames</a></li>
 
-              <li><a
-                  href="/media?mediaType=Videogame"
-                  class="nav-link px-2 text-white"
-                >Videogames</a></li>
-              <li><a
-                  href="/media?mediaType=Book"
-                  class="nav-link px-2 text-white"
-                >Books</a></li>
-            </ul>
+                  <li><a href="/media?mediaType=Book" class="nav-link text-white">Books</a></li>
 
-            {{#unless userData}}
-            <div class="text-end">
-              <a href="/auth/login"><button
-                  type="button"
-                  class="btn btn-outline-light me-2"
-                >Login</button></a>
-              <a href="/auth/signup"><button
-                  type="button"
-                  class="btn btn-warning"
-                >Sign-up</button></a>
+
+                  
+              </ul>
             </div>
-
-            {{else}}
-              {{#if userData.admin}}
-                <div class ='text-end'>
-                <a href="/admin"><button
-                    type = 'button'
-                    class = 'btn btn-info'
-                  >Admin Panel</button></a>
-                </div>
-              {{/if}}
-
-                <div class="text-end">
-                  <a href="/auth/logout"><button
-                      type="button"
-                      class = "btn btn-warning"
-                  >Logout</button></a>
-                </div>
-            {{/unless}}
-            
+ 
+            <div class="col-sm-12 col-lg-4">
+                {{#unless userData}}
+                  <a href="/auth/login"><button type='button' class="btn btn-primary">Login</button></a>
+                  <a href="/auth/signup"><button type='button' class="btn btn-secondary">Sign Up</button></a>
+                
+                {{else}}
+                
+                  {{#if userData.admin}}
+                  <a href="/admin"><button type='button' class='btn btn-info'>Admin</button></a>
+                  {{/if}}
+                  <a href="/auth/logout"><button type="button" class="btn btn-warning">Logout</button></a>
+                {{/unless}}
+            </div>
           </div>
         </div>
-      </header>
-    </div>
+      </nav>
 
     {{{body}}}
 
