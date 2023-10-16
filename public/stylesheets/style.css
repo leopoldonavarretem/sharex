@@ -1,43 +1,23 @@
-body {
-    background-color: rgb(51, 51, 51);;
-    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  }
-  
-  a {
-    color: #00b7ff;
-  }
-  
-  h1 {
-    color: 15px;
-  }
-  
-  #Memory {
-    font-size: 20px;
-    background-color: rgb(91, 22, 122);
-    border: none;
-    color: white;
-  }
-  
-  #cuerpo {
-    background-color: rgba(112, 109, 109, 0.28);
-  }
-  
-  #fondo-home{
-    
-    background-image: url("https://tucinecritico.com/wp-content/uploads/2021/10/Portada-Halloween-Tu-Cine-Critico.png");
-    height: 100%;
-    background-position: center;
-    background-size: cover;
-    color: rgb(252, 251, 250);
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
-  }
-  
-  #contener {
-      width: 100%;
-      margin-right: auto;
-      margin-left: auto;
-  }
-  
+#Memory {
+  font-size: 20px;
+  border: none;
+  color: white;
+}
+
+#fondo-home{
+  background-image: url("https://tucinecritico.com/wp-content/uploads/2021/10/Portada-Halloween-Tu-Cine-Critico.png");
+  height: 100%;
+  background-position: center;
+  background-size: cover;
+  color: rgb(252, 251, 250);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#contener {
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+}
