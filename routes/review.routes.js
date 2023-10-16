@@ -13,7 +13,7 @@ const isValidObjectId = (id) => ObjectId.isValid(id) && (new Object(id)).toStrin
 
 // This route will create a new review 
 router.post('/', isLoggedIn, async (req,res, next)=>{
-  
+
   // Destructuring the request
   let {review, rating, mediaId, like, mediaType} = req.body; 
   const userId = req.session.user._id;
@@ -27,12 +27,12 @@ router.post('/', isLoggedIn, async (req,res, next)=>{
 
   //Check that it is a valid external Id
   if (!isValidObjectId(mediaId)) return next(400);
-  if (!['Videogame', 'Movie', 'Album', 'serie', 'Book'].includes(mediaType)) return next(400);
+  if (!['Videogame', 'Movie', 'Album', 'Serie', 'Book'].includes(mediaType)) return next(400);
 
   // Check that the review object is valid
-  if (typeof review !== 'string' || review.length < 30) req.session.reviewErrors.push("Review must only include text and a minimum length of 30");
-  if (typeof rating !== 'number' || 0>rating || rating>5) req.session.reviewErrors.push("Rating can only be a number and must at a minimum 0 and maximum 5");
-  if (typeof like !== 'boolean') req.session.reviewErrors.push('Like can only be true or false');
+  if (typeof review !== 'string' || review.length < 30) req.session.reviewErrors.push("Review must be at minimum 30 and maximum 350 characters.");
+  if (typeof rating !== 'number' || 0 > rating || rating > 5 || Number.isNaN(rating)) req.session.reviewErrors.push("Please select a valid rating.");
+  if (typeof like !== 'boolean') req.session.reviewErrors.push(`Please select whether you liked the ${mediaType}`);
 
   // Send the user back to the request if there are any errors
   if (req.session.reviewErrors.length > 0) return res.redirect(`/media/${mediaId}`);
@@ -55,7 +55,6 @@ router.post('/', isLoggedIn, async (req,res, next)=>{
 router.get('/:reviewId', isLoggedIn, async(req, res, next)=>{
   // Destructuring the request
   const user = req.session.user;
-  
   // Validate the ObjectId
   if (!isValidObjectId(req.params.reviewId)) return next(400);
 
