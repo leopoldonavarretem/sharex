@@ -1,0 +1,22 @@
+<div class="container">
+    <h1 class="display-2 text-left">{{mediaType}}s</h1>
+</div>
+
+<div class="container">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
+        {{#each mediasData}}
+        <div class="col">
+            <div class="card h-100">
+                <img class="card-img-top" src="{{imageUrl}}" alt="Card image">
+                <div class="card-body">
+                    <h2 class="card-title">{{mediaName}}</h2>
+                    <p class='card-subtitle text-muted'>{{creator}}, {{year}}</p>
+                    <p class="card-text" >{{description}}</p>
+                    <p class="card-text"><small class="'text-muted">{{genre}}</small></p>
+                    <a href="/media/{{id}}" class="btn btn-primary">View More</a>
+                </div>
+            </div>
+        </div>
+        {{/each}}         
+    </div>
+</div> 
