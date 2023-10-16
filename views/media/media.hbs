@@ -1,0 +1,76 @@
+
+<div class='container p-3 my-3 shadow-md bg-body rounded'>
+  <h1 class="text-left">{{mediaData.mediaName}}</h1>
+    <div class = 'row'>
+      <div class= 'col-sm-12 col-lg-6'>
+        <img src="{{mediaData.imageUrl}}" class="img-thumbnail" alt="Media Image"/>
+      </div>
+      <div class="col-sm-12 col-lg-6">
+        <h3>{{mediaData.creator}}, {{mediaData.year}}</h2>
+        <p class= 'lead'>{{mediaData.description}}</p>
+        <p class= 'text-muted'>{{mediaData.genre}}</p>
+      </div>
+  </div>
+</div>
+
+{{#if userData}}
+<div class="container p-1 my-3 border-top border-bottom border-2 rounded-3 border-black">
+  <form action="/reviews" method="post" class="row g-3">
+    <textarea id="externalId" name="mediaId" hidden>{{mediaData.id}}</textarea>
+    <textarea id="mediaType" name="mediaType" hidden>{{mediaData.mediaType}}</textarea> 
+    <h3 class="text-left">Share your opinion:</h3>
+
+    <div class="col-12">
+      <textarea type="text" class="form-control" placeholder="Type your Review" id="review" name="review" minlength="30" required></textarea>
+    </div>
+
+    <div class="col-6">
+      <select class="form-select" id="rating" name="rating" required>
+        <option selected>Select Rating</option>
+        <option value="1">One star</option>
+        <option value="2">Two stars</option>
+        <option value="3">Three stars</option>
+        <option value="4">Four stars</option>
+        <option value="5">Five stars</option>
+      </select>
+    </div>
+
+    <div class="col-3 col-sm-3 col-md-2 col-lg-1">
+        <input class="btn-check" type="checkbox" id="like" name="like">
+        <label class="btn btn-outline-danger" for="like" autocomplete="off">Like?</label>
+    </div>
+
+    <div class="col-3 col-sm-3 col-md-2 col-lg-1">
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+    
+  </form>
+</div>
+{{/if}}
+
+{{#each errorMessage}}
+  <div class="alert alert-danger container" role="alert">
+    {{this}}
+  </div>
+{{/each}}
+
+<div class="container">
+  {{#each reviewsData}}
+  <div id="accordion">
+    <div class="card">
+      <div class="card-header">
+        <a class="btn" data-bs-toggle="collapse" href="#collapseOne">
+          {{#if like}} <img src="/images/heart.png" alt="" srcset="" width="30px"> {{/if}}{{userId.username}} Says:  
+        </a>
+      </div>
+      <div id="collapseOne" class="collapse show" data-bs-parent="#accordion">
+        <div class="card-body">
+          {{review}}
+          <br>
+        
+        </div>
+      </div>
+    </div>
+  </div>
+  {{/each}}
+</div>
