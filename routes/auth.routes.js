@@ -19,7 +19,9 @@ router.get("/signup", isLoggedOut, (req, res) => {
 });
 
 router.post("/signup", isLoggedOut, (req, res) => {
-  const { username, password, email } = req.body;
+  const { password} = req.body;
+  const username = req.body.username.toLowerCase()
+  const email = req.body.email.toLowerCase()
 
   if (!username) {
     return res.status(400).render("auth/signup", {
@@ -91,7 +93,8 @@ router.get("/login", isLoggedOut, (req, res) => {
 });
 
 router.post("/login", isLoggedOut, (req, res, next) => {
-  const { username, password } = req.body;
+  const { password } = req.body;
+  const username = req.body.username.toLowerCase()
 
   if (!username) {
     return res.status(400).render("auth/login", {
