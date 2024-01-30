@@ -1,6 +1,14 @@
+
 <div class="container-fluid">
     <h1 class="display-2 text-center">Admin Console</h1>
 </div>
+
+{{#each errorMessage}}
+  <div class="alert alert-danger container" role="alert">
+    {{this}}
+  </div>
+{{/each}}
+
 <div class="container">
 <form action="/admin" method="post" enctype="multipart/form-data">
   <div class="mb-3 mt-3">
@@ -26,6 +34,7 @@
   <div class="mb-3">
     <label class="form-label">Category:
       <select name="mediaType">
+        <option>Select One</option>
         <option>Album</option>
         <option>Serie</option>
         <option>Videogame</option>
@@ -43,10 +52,3 @@
 </form>
 
 </div>
-
-{{#each errorMessage}}
-  <div class="alert alert-danger container" role="alert">
-    {{this}}
-  </div>
-{{/each}}
-
