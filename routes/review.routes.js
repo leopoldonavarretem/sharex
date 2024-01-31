@@ -51,7 +51,7 @@ router.post('/', isLoggedIn, async (req,res, next)=>{
   };
 });
 
-//This route will delete the movie 
+//This route will delete the review
 router.get('/:reviewId', isLoggedIn, async(req, res, next)=>{
   // Destructuring the request
   const user = req.session.user;

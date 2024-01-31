@@ -59,16 +59,18 @@ router.post('/', isLoggedIn, isAdmin, uploadFile.single('imageUrl'), async (req,
   };
 });
 
-//This route will delete the videogame
-router.get('/:mediaId', isLoggedIn, isAdmin, async (req, res, next)=>{
+//This route will delete the media
+router.get('/delete', isLoggedIn, isAdmin, async (req, res, next)=>{
   
   // Validate the ObjectId
   if (!isValidObjectId(req.params.mediaId)) return next(400);
 
   try{
       
-    // Delete the Review
-    await Media.findByIdAndDelete(req.params.mediaId);
+    // Delete the Media
+    await Media.findByIdAndDelete(req.body.mediaId);
+
+    req.session.success = `Media ID ${req.body.mediaId} deleted succesfully.`
 
     return res.redirect('/admin');
   }
