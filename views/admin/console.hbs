@@ -9,46 +9,79 @@
   </div>
 {{/each}}
 
-<div class="container">
-<form action="/admin" method="post" enctype="multipart/form-data">
-  <div class="mb-3 mt-3">
-    <label class="form-label">Name:</label>
-    <input type="text" class="form-control" id="email" name="mediaName" required>
+{{#if successMessage}}
+  <div class="alert alert-success container" role="alert">
+    {{successMessage}}
   </div>
-  <div class="mb-3">
-    <label class="form-label">Description:</label>
-    <input type="text" class="form-control" id="pwd" name="description" required>
-  </div>
-  <div class="mb-3">
-    <label class="form-label">Genre:</label>
-    <input type="text" class="form-control" id="pwd" name="genre" required>
-  </div>
-  <div class="mb-3">
-    <label class="form-label">Year:</label>
-    <input type="number" class="form-control" id="pwd" name="year" required>
-  </div>
-  <div class="mb-3">
-    <label class="form-label">Creator:</label>
-    <input type="text" class="form-control" id="pwd" name="creator" required>
-  </div>
-  <div class="mb-3">
-    <label class="form-label">Category:
-      <select name="mediaType">
-        <option>Select One</option>
-        <option>Album</option>
-        <option>Serie</option>
-        <option>Videogame</option>
-        <option>Movie</option>
-        <option>Book</option>
-      </select>
-    </label>
-  </div>
-  <div class="mb-3">
-    <label>Image:
-      <input type="file" name="imageUrl" accept=".jpg, .jpeg" >
-    </label>
-  </div>
-  <button type="submit" class="btn btn-primary">Create</button>
-</form>
+{{/if}}
 
+<div class="container">
+  <div class="row">
+    <form action="/admin" method="post" enctype="multipart/form-data" class="col-sm-12 col-md-6">
+
+      <div class="mb-3 mt-3">
+        <p class="h3">Create new Media</p>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Name:</label>
+        <input type="text" class="form-control" id="email" name="mediaName" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Description:</label>
+        <input type="text" class="form-control" id="pwd" name="description" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Genre:</label>
+        <input type="text" class="form-control" id="pwd" name="genre" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Year:</label>
+        <input type="number" class="form-control" id="pwd" name="year" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Creator:</label>
+        <input type="text" class="form-control" id="pwd" name="creator" required>
+      </div>
+
+
+        <div class="row">
+          <div class="col-sm-12 col-lg-5 mb-3">
+            <select name="mediaType" class="form-select">
+              <option selected>Select Media Type</option>
+              <option>Album</option>
+              <option>Serie</option>
+              <option>Videogame</option>
+              <option>Movie</option>
+              <option>Book</option>
+            </select>
+          </div>
+
+          <div class="col-sm-12 col-lg-7">
+            <div class="input-group">
+              <input type="file" name="imageUrl" accept=".jpg, .jpeg" id="UploadFile" class="form-control">
+              <button type="submit" class="btn btn-outline-secondary">Create</button>
+            </div>
+          </div>
+        </div>
+
+
+    </form>
+
+    <form action="/admin/delete" method="post"class="col-sm-12 col-md-6">
+      <div class="mb-3 mt-3">
+        <p class="h3">Delete Media</p>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">MediaId:</label>
+        <input type="text" class="form-control" id="mediaId" name="mediaId" required>
+      </div>
+       <button type="submit" class="btn btn-danger">Delete</button>
+    </form>
+  </div>
 </div>

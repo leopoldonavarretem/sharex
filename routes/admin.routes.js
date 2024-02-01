@@ -1,5 +1,6 @@
 // Imports
 const router = require('express').Router();
+const {Types: {ObjectId}} = require('mongoose');
 const uploadFile = require("../config/cloudinary.config");
 
 // Import Models
@@ -9,16 +10,21 @@ const Media = require('../models/Media.model');
 const isLoggedIn = require('../middleware/isLoggedIn');
 const isAdmin = require('../middleware/isAdmin');
 
+// Functions
+const isValidObjectId = (id) => ObjectId.isValid(id) && (new Object(id)).toString() === id;
+
 // Access to admin page
 router.get('/', isLoggedIn, isAdmin, (req,res)=>{
 
   // Get the required data
   const userData = req.session.user;
   const errorMessage = req.session.mediaErrors;
+  const successMessage = req.session.mediaSuccess;
 
   if(errorMessage) delete req.session.mediaErrors;
+  if(successMessage) delete req.session.mediaSuccess;
 
-  res.render('admin/console', {userData, errorMessage});
+  res.render('admin/console', {userData, errorMessage, successMessage});
 })
 
 // Create media
@@ -35,13 +41,13 @@ router.post('/', isLoggedIn, isAdmin, uploadFile.single('imageUrl'), async (req,
   req.session.mediaErrors = [];
   
   // Check that the informaton is valid
-  if (typeof mediaName !== 'string') req.session.mediaErrors.push('Media Name must be of type string');
-  if (typeof description !== 'string') req.session.mediaErrors.push('Description must be of type string');
-  if (typeof genre !== 'string') req.session.mediaErrors.push('Genre can only be of type string');
+  if (typeof mediaName !== 'string') req.session.mediaErrors.push('Media Name must be of type string.');
+  if (typeof description !== 'string') req.session.mediaErrors.push('Description must be of type string.');
+  if (typeof genre !== 'string') req.session.mediaErrors.push('Genre can only be of type string.');
   if (typeof year !== 'number' || year < 0 || year > 2050 ) req.session.mediaErrors.push('Input a valid year.');
   if (typeof creator !== 'string') req.session.mediaErrors.push('Creator must be of type string.');
-  if (typeof path !== 'string') req.session.mediaErrors.push('Image must be uploaded');
-  if(!['Book', 'Videogame', 'Movie', 'Serie', 'Album'].includes(mediaType)) req.session.mediaErrors.push('Input a valid Media Type');
+  if (typeof path !== 'string') req.session.mediaErrors.push('Image must be uploaded.');
+  if(!['Book', 'Videogame', 'Movie', 'Serie', 'Album'].includes(mediaType)) req.session.mediaErrors.push('Input a valid Media Type.');
   
   // Send the user back to the request if there are any errors
   if (req.session.mediaErrors.length > 0)  return res.redirect(`/admin`);
@@ -51,6 +57,8 @@ router.post('/', isLoggedIn, isAdmin, uploadFile.single('imageUrl'), async (req,
 
   try{
     await Media.create(newMedia);
+
+    req.session.mediaSuccess = `${mediaType}: ${mediaName} has been successfully created.`
   
     return res.redirect('/admin');
   }
@@ -60,17 +68,25 @@ router.post('/', isLoggedIn, isAdmin, uploadFile.single('imageUrl'), async (req,
 });
 
 //This route will delete the media
-router.get('/delete', isLoggedIn, isAdmin, async (req, res, next)=>{
-  
+router.post('/delete', isLoggedIn, isAdmin, async (req, res, next)=>{
+
+  const mediaId = req.body.mediaId;
+
+  // Validate data
+  req.session.mediaErrors = [];
+
   // Validate the ObjectId
-  if (!isValidObjectId(req.params.mediaId)) return next(400);
+  if (!isValidObjectId(mediaId)) req.session.mediaErrors.push('Please input a valid Media ID');
+
+  // Send the user back to the request if there are any errors
+  if (req.session.mediaErrors.length > 0)  return res.redirect(`/admin`);
 
   try{
       
     // Delete the Media
     await Media.findByIdAndDelete(req.body.mediaId);
 
-    req.session.success = `Media ID ${req.body.mediaId} deleted succesfully.`
+    req.session.mediaSuccess = `Media ID ${req.body.mediaId} deleted succesfully.`
 
     return res.redirect('/admin');
   }
