@@ -11,7 +11,7 @@ router.get('/', async (req, res, next)=>{
   // Get necessary data
   const userData = req.session.user;
   const query = req.query.mediaType;
-  if(!['Album', 'Serie', 'Book', 'Videogame', 'Movie'].includes(query)) return next(404)
+  if(!['Album', 'Serie', 'Book', 'Videogame', 'Movie'].includes(query)) return next(400)
 
   try{
     const mediasData = await Media.find({mediaType: req.query.mediaType}).sort({year: -1})
