@@ -30,7 +30,7 @@ router.post('/', isLoggedIn, async (req,res, next)=>{
   if (!['Videogame', 'Movie', 'Album', 'Serie', 'Book'].includes(mediaType)) return next(400);
 
   // Check that the review object is valid
-  if (typeof review !== 'string' || review.length < 30) req.session.reviewErrors.push("Review must be at minimum 30 and maximum 350 characters.");
+  if (typeof review !== 'string' || review.length < 30 || review.length >=800) req.session.reviewErrors.push("Review must be at minimum 30 and maximum 350 characters.");
   if (typeof rating !== 'number' || 0 > rating || rating > 5 || Number.isNaN(rating)) req.session.reviewErrors.push("Please select a valid rating.");
   if (typeof like !== 'boolean') req.session.reviewErrors.push(`Please select whether you liked the ${mediaType}`);
 
@@ -39,8 +39,8 @@ router.post('/', isLoggedIn, async (req,res, next)=>{
   
   // Create review object
   const newReview = {review, rating, mediaId, like, userId};
-
-  try{    
+  
+  try{
     // Create a new Review
     await Review.create(newReview);
     

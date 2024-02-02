@@ -19,7 +19,7 @@ const reviewSchema = new Schema(
       type: String,
       required: [true, 'Review text is required.'],
       minLength: 30,
-      maxLength: 350
+      maxLength: 800
     },
 
     rating: {
