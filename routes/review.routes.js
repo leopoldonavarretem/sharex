@@ -36,9 +36,13 @@ router.post('/', isLoggedIn, async (req,res, next)=>{
 
   // Send the user back to the request if there are any errors
   if (req.session.reviewErrors.length > 0) return res.redirect(`/media/${mediaId}`);
-  
+
+  const rockets = [];
+  for(i=0; i < rating; i++) rockets.push(1)
+  rating = rockets
+
   // Create review object
-  const newReview = {review, rating, mediaId, like, userId};
+  const newReview = {review, mediaId, like, userId, rating};
   
   try{
     // Create a new Review

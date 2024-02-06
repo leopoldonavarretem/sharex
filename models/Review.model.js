@@ -22,12 +22,9 @@ const reviewSchema = new Schema(
       maxLength: 800
     },
 
-    rating: {
-      type: Number,
-      required: [true, 'Rating is required'],
-      min: 0,
-      max: 5
-    },
+    rating: [
+      {type: Number},
+    ],
 
     like: {
       type: Boolean,
