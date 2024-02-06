@@ -18,7 +18,8 @@
 </div>
 
 {{#if errorMessage}}
-  <div class="alert alert-danger container" role="alert">
+  <div class="alert alert-danger alert-dismissable show fade container" role="alert">
    {{errorMessage}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
 {{/if}}
