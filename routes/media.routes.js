@@ -23,24 +23,34 @@ router.get('/', async (req, res, next)=>{
   };
 });
 
+//This route will show you an individual media
 router.get('/:media', async(req, res, next)=>{
   
   // Get required data
   const userData = req.session.user;
   const errorMessage = req.session.reviewErrors;
+  const successMessage = req.session.reviewSuccess;
 
   if(errorMessage) delete req.session.reviewErrors;
+  if(successMessage) delete req.session.reviewSuccess;
 
   try{
     const mediaData = await Media.findById(req.params.media);
 
     const reviewsData = await Review.find({mediaId: mediaData._id}).sort({year: -1})
       .populate('userId', 'username')
+      .lean()
       .catch(()=>{
         return [];
       });
       
-    return res.render('media/media', {mediaData, userData, errorMessage, reviewsData});
+    if (userData){
+      reviewsData.forEach((media)=>{
+        if(userData.admin || userData.username === media.userId.username){
+          media.allowDelete = true;
+        }})};
+      
+    return res.render('media/media', {mediaData, userData, errorMessage, successMessage, reviewsData});
   }
   catch(err){
     next(500);

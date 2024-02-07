@@ -47,6 +47,8 @@ router.post('/', isLoggedIn, async (req,res, next)=>{
   try{
     // Create a new Review
     await Review.create(newReview);
+
+    req.session.reviewSuccess = `Review has been posted.`
     
     return res.redirect(`/media/${mediaId}`);
   }
@@ -56,7 +58,7 @@ router.post('/', isLoggedIn, async (req,res, next)=>{
 });
 
 //This route will delete the review
-router.get('/:reviewId', isLoggedIn, async(req, res, next)=>{
+router.post('/:reviewId', isLoggedIn, async(req, res, next)=>{
   // Destructuring the request
   const user = req.session.user;
   // Validate the ObjectId
@@ -64,16 +66,21 @@ router.get('/:reviewId', isLoggedIn, async(req, res, next)=>{
 
   try{
     // Request the review
-    const review = await Review.findById(req.params.reviewId).sort({createdAt : -1})
+    const review = await Review.findById(req.params.reviewId)
       .populate('userId', 'username');
 
     // Validate that the owner is deleting it
-    if (review.userId.username !== user.username) return next(401) 
+    if (user.admin || review.userId.username === user.username){
+      // Delete the Review
+      await Review.findByIdAndDelete(req.params.reviewId);
+
+      req.session.reviewSuccess = `Review has been deleted.`
       
-    // Delete the Review
-    await Review.findByIdAndDelete(req.params.reviewId)
-    
-    return res.redirect(`/users/${user._id}`)
+      return res.redirect(`/media/${req.body.mediaId}`);
+    }
+    else {
+      return next(401)
+    }
   }
   catch(err){
     return next(500)

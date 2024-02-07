@@ -1,12 +1,12 @@
 {{#each errorMessage}}
-  <div class="alert alert-danger dismissable show fade container" role="alert">
+  <div class="alert alert-danger dismissable show fade container my-2" role="alert">
     {{this}}
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
 {{/each}}
 
 {{#if successMessage}}
-  <div class="alert alert-success alert-dismissable fade show container" role="alert">
+  <div class="alert alert-success alert-dismissable fade show container my-2" role="alert">
     {{successMessage}}
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
@@ -77,9 +77,16 @@
   {{#each reviewsData}}
     <div class="card m-3">
       <div class="card-header">
-          {{userId.username}} 
-          {{#if like}} <img src="/images/heart.png" style="width: 1rem;"> {{/if}}
-          {{#each rating}} <img src="/images/rocket.png" style="width: 1rem;"> {{/each}}
+          <form action="/reviews/{{_id}}" method="post">
+            {{userId.username}}
+            {{#if like}} <img src="/images/heart.png" style="width: 1rem;"> {{/if}}
+            {{#each rating}} <img src="/images/rocket.png" style="width: 1rem;"> {{/each}}
+
+            {{#if allowDelete}}
+              <button type="submit" class="btn btn-danger">Delete Comment</button>
+              <textarea id="externalId" name="mediaId" hidden>{{mediaId}}</textarea>
+            {{/if}}
+          </form>
       </div>
       <div class="card-body">
           {{review}}
