@@ -48,7 +48,15 @@ router.get('/:media', async(req, res, next)=>{
       reviewsData.forEach((media)=>{
         if(userData.admin || userData.username === media.userId.username){
           media.allowDelete = true;
-        }})};
+        }
+      })
+    };
+      
+    reviewsData.forEach((media)=>{
+      const rockets = []
+      for(i =0; i<media.rating; i++) rockets.push(1)
+      media.rating = rockets
+    });
       
     return res.render('media/media', {mediaData, userData, errorMessage, successMessage, reviewsData});
   }
