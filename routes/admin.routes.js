@@ -63,6 +63,7 @@ router.post('/', isLoggedIn, isAdmin, uploadFile.single('imageUrl'), async (req,
     return res.redirect('/admin');
   }
   catch(err){
+    console.log(err)
     next(500);
   };
 });
