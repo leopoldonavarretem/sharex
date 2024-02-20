@@ -29,6 +29,7 @@ router.get('/', isLoggedIn, isAdmin, (req,res)=>{
 
 // Create media
 router.post('/', isLoggedIn, isAdmin, uploadFile.single('imageUrl'), async (req, res, next)=>{
+  console.log('error')
 
   // Destructuring the request
   let {mediaName, description, genre, year, creator, mediaType} = req.body;
@@ -49,6 +50,7 @@ router.post('/', isLoggedIn, isAdmin, uploadFile.single('imageUrl'), async (req,
   if (typeof path !== 'string') req.session.mediaErrors.push('Image must be uploaded.');
   if(!['Book', 'Videogame', 'Movie', 'Serie', 'Album'].includes(mediaType)) req.session.mediaErrors.push('Input a valid Media Type.');
   
+  console.log(req.session.mediaErrors)
   // Send the user back to the request if there are any errors
   if (req.session.mediaErrors.length > 0)  return res.redirect(`/admin`);
   
@@ -56,6 +58,7 @@ router.post('/', isLoggedIn, isAdmin, uploadFile.single('imageUrl'), async (req,
   const newMedia = {mediaName, description, genre, year, creator, mediaType, imageUrl: path};
 
   try{
+    console.log('hheeello')
     await Media.create(newMedia);
 
     req.session.mediaSuccess = `${mediaType}: ${mediaName} has been successfully created.`
