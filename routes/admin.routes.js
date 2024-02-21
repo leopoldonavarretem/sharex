@@ -28,7 +28,7 @@ router.get('/', isLoggedIn, isAdmin, (req,res)=>{
 })
 
 // Create media
-router.post('/hello', isLoggedIn, isAdmin, uploadFile.single('imageUrl'), async (req, res, next)=>{
+router.post('/', isLoggedIn, isAdmin, uploadFile.single('imageUrl'), async (req, res, next)=>{
   console.log('error')
 
   // Destructuring the request

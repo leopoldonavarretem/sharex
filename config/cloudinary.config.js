@@ -14,7 +14,7 @@ const storage = new CloudinaryStorage({
   cloudinary,
   params: async(req, file) =>{
     return{
-      format: 'jpeg',
+      allowedFormats: ['jpg', 'png', 'jpeg'],
       folder: 'sharex'
     }
   }
