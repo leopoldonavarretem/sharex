@@ -6,6 +6,8 @@ cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
   api_key: process.env.CLOUDINARY_KEY,
   api_secret: process.env.CLOUDINARY_SECRET,
+  private_cdn: false,
+  secure_distribution: null,
   secure: true
 });
  
