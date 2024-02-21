@@ -6,8 +6,6 @@ cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
   api_key: process.env.CLOUDINARY_KEY,
   api_secret: process.env.CLOUDINARY_SECRET,
-  private_cdn: false,
-  secure_distribution: null,
   secure: true
 });
  
@@ -15,6 +13,7 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary,
   params: async(req, file) =>{
+    console.log(req, file)
     return{
       allowedFormats: ['jpg', 'png', 'jpeg'],
       folder: 'sharex'
