@@ -29,7 +29,6 @@ router.get('/', isLoggedIn, isAdmin, (req,res)=>{
 
 // Create media
 router.post('/', isLoggedIn, isAdmin, uploadFile.single('imageUrl'), async (req, res, next)=>{
-  console.log('error')
 
   // Destructuring the request
   let {mediaName, description, genre, year, creator, mediaType} = req.body;
@@ -58,7 +57,7 @@ router.post('/', isLoggedIn, isAdmin, uploadFile.single('imageUrl'), async (req,
   const newMedia = {mediaName, description, genre, year, creator, mediaType, imageUrl: path};
 
   try{
-    console.log('hheeello')
+
     await Media.create(newMedia);
 
     req.session.mediaSuccess = `${mediaType}: ${mediaName} has been successfully created.`
@@ -66,7 +65,7 @@ router.post('/', isLoggedIn, isAdmin, uploadFile.single('imageUrl'), async (req,
     return res.redirect('/admin');
   }
   catch(err){
-    console.log(err)
+
     next(500);
   };
 });

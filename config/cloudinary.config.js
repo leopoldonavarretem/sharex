@@ -13,10 +13,12 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary,
   params: async(req, file) =>{
-    console.log(req, file)
+    const filename = req.body.mediaName.replace(/ /g,"_");
+
     return{
-      allowedFormats: ['jpg', 'png', 'jpeg'],
-      folder: 'sharex'
+      formats: 'jpeg',
+      folder: 'sharex',
+      filename: filename
     }
   }
 });
