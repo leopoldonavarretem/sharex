@@ -55,7 +55,7 @@
 
 ## About The Project
 
-Shares is a review platform where users can review any form of entertainment they like such as movies, videogames, series, books and albums. Users can signup to rate and post/delete their reviews. Administrators can also add new media and they are able to
+Sharex is a review platform where users can review any form of entertainment they like such as movies, videogames, series, books and albums. Users can signup to rate and post/delete their reviews. Administrators can also add new media and they are able to
 moderate the reviews by being able to delete user reviews.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -77,7 +77,7 @@ moderate the reviews by being able to delete user reviews.
 
 ### Prerequisites
 
-* Node project manager
+* Node Package Manager
 * A Mongo DB account
 * A Cloudinary account
 
@@ -131,13 +131,13 @@ Project Link: [https://github.com/leopoldonavarretem/sharex](https://github.com/
 
 <!-- MARKDOWN LINKS & IMAGES -->
 
-[contributors-shield]: https://img.shields.io/github/contributors/leopoldonavarretem/ders-backend.svg?style=for-the-badge
+[contributors-shield]: https://img.shields.io/github/contributors/leopoldonavarretem/sharex.svg?style=for-the-badge
 
-[contributors-url]: https://github.com/leopoldonavarretem/ders-backend/graphs/contributors
+[contributors-url]: https://github.com/leopoldonavarretem/sharex/graphs/contributors
 
-[forks-shield]: https://img.shields.io/github/forks/leopoldonavarretem/ders-backend.svg?style=for-the-badge
+[forks-shield]: https://img.shields.io/github/forks/leopoldonavarretem/sharex.svg?style=for-the-badge
 
-[forks-url]: https://github.com/leopoldonavarretem/ders-backend/network/members
+[forks-url]: https://github.com/leopoldonavarretem/sharex/network/members
 
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 
